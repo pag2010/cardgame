@@ -3,7 +3,7 @@
     {
         function __construct()
         {
-            $this->model=new Model_login();
+            $this->model=new Model_Login();
             $this->view=new View();
         }
 	    function action_index()
@@ -24,7 +24,13 @@
                 if ($err!=null){ 
                     echo 'Введён неверный логин или пароль';
                 }else{
-                   echo $this->model->email;
+                   if ((strcmp(hash ('sha256', $_POST['password']), $this->model->password_hash))==0){
+                       echo "email ";
+                       echo $this->model->email;
+                   }else{
+                       //echo $this->model->password_hash;
+                       echo hash("sha256", $_POST['password']);
+                   }
                 }
             }
         }
