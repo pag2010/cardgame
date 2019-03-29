@@ -29,7 +29,7 @@
     
             $model_file = strtolower($model_name).'.php';
             $model_path = "/app/application/models/".$model_file;
-            echo "file exists ".$model_path." ".(file_exists($model_path) ?'true':'false');
+            //echo "file exists ".$model_path." ".(file_exists($model_path) ?'true':'false');
             if(file_exists($model_path))
             {
                 include "/app/application/models/".$model_file;
@@ -48,7 +48,7 @@
                 правильно было бы кинуть здесь исключение,
                 но для упрощения сразу сделаем редирект на страницу 404
                 */
-                //Route::ErrorPage404();
+                Route::ErrorPage404();
             }
             
             // создаем контроллер
