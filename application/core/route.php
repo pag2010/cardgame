@@ -29,6 +29,7 @@
     
             $model_file = strtolower($model_name).'.php';
             $model_path = "/app/application/models/".$model_file;
+            echo "file exists ".$model_path." ".file_exists($model_path);
             if(file_exists($model_path))
             {
                 include "/app/application/models/".$model_file;
