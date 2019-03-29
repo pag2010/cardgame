@@ -1,5 +1,4 @@
 <?php
-
 class Model_Login extends Model
 {
 	public $login;
@@ -9,7 +8,7 @@ class Model_Login extends Model
 
 	public function connect_to_data()
 	{
-		require_once 'connection/connection.php';
+		require_once '/app/application/models/connection/connection.php';
 		$link = mysqli_connect($host, $user, $password, $database);
 		return $link;
 	}
