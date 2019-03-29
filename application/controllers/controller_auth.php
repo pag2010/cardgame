@@ -25,11 +25,9 @@
                     echo 'Введён неверный логин или пароль';
                 }else{
                    if ((strcmp(hash ('sha256', $_POST['password']), $this->model->password_hash))==0){
-                       echo "email ";
-                       echo $this->model->email;
+                        echo 'Авторизация пройдена успешно!';
                    }else{
-                       //echo $this->model->password_hash;
-                       echo hash("sha256", $_POST['password']);
+                       echo 'Введён неверный логин или пароль';
                    }
                 }
             }
