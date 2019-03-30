@@ -8,6 +8,7 @@ $(document).ready(function(){
     $('#password').blur(function(){
         if ($('#password').val()!=""){
             $('#password').val(SHA256($('#password').val()));
+            alert($('#password').val());
         }
     });
 
@@ -20,9 +21,6 @@ $(document).ready(function(){
 
 
 function onSubmitClickOnLogin(){
-    var Form = document.forms["auth_login"];
-    var passwordBox=Form.elements["password"];
-    passwordBox.value=SHA256(passwordBox.value);
     return true;  
 }
 
