@@ -8,7 +8,6 @@ $(document).ready(function(){
     $('#password').blur(function(){
         if ($('#password').val()!=""){
             $('#password').val(SHA256($('#password').val()));
-            alert($('#password').val());
         }
     });
 
