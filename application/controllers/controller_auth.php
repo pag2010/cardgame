@@ -16,7 +16,12 @@
         {
             $this->view->generate('auth/registration_view.php', 'template_view.php', 'auth_js.php');
             if (isset($_POST['submit'])){
-                $this->model->login=$_POST['login'];
+                if (strcmp($_POST['password'], $_POST['password_confirm'])==0){
+                    $this->model->login=$_POST['login'];
+                    $this->model->email=$_POST['email'];
+                    $this->password_hash=$_POST['password'];
+                    echo "На сервере получены учетные данные";
+                }
             }
         }
         function action_login()

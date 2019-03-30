@@ -1,14 +1,20 @@
 $(document).ready(function(){
+    $('#password').focus(function(){
+        $('#password').val('');
+    });
+    $('#password_confirm').focus(function(){
+        $('#password_confirm').val('');
+    });
     $('#password').blur(function(){
-        var Form = document.forms["auth_reg"];
-        var passwordBox=Form.elements["password"];
-        passwordBox.value=SHA256(passwordBox.value);
+        if ($('#password').val()!=""){
+            $('#password').val(SHA256($('#password').val()));
+        }
     });
 
     $('#password_confirm').blur(function(){
-        var Form = document.forms["auth_reg"];
-        var passwordBox=Form.elements["password_confirm"];
-        passwordBox.value=SHA256(passwordBox.value);
+        if ($('#password_confirm').val()!=""){
+            $('#password_confirm').val(SHA256($('#password_confirm').val()));
+        }
     });
 });
 
