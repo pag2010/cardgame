@@ -8,7 +8,7 @@ class Model_Login extends Model
 
 	public function connect_to_data()
 	{
-		require_once '/app/application/models/connection/connection.php';
+		require_once 'application/models/connection/connection.php';
 		$link = mysqli_connect($host, $user, $password, $database);
 		return $link;
 	}

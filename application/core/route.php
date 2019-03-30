@@ -28,19 +28,23 @@
             // подцепляем файл с классом модели (файла модели может и не быть)
     
             $model_file = strtolower($model_name).'.php';
-            $model_path = "/app/application/models/".$model_file;
+            //$model_path = "/app/application/models/".$model_file;
+            $model_path = "application/models/".$model_file;
             //echo "file exists ".$model_path." ".(file_exists($model_path) ?'true':'false');
             if(file_exists($model_path))
             {
-                include "/app/application/models/".$model_file;
+                //include "/app/application/models/".$model_file;
+                include "application/models/".$model_file;
             }
     
             // подцепляем файл с классом контроллера
             $controller_file = strtolower($controller_name).'.php';
-            $controller_path = "/app/application/controllers/".$controller_file;
+            //$controller_path = "/app/application/controllers/".$controller_file;
+            $controller_path = "application/controllers/".$controller_file;
             if(file_exists($controller_path))
             {
-                include "/app/application/controllers/".$controller_file;
+                //include "/app/application/controllers/".$controller_file;
+                include "application/controllers/".$controller_file;
             }
             else
             {
@@ -71,7 +75,8 @@
         static function ErrorPage404()
         {
             http_response_code(404);
-            include('/app/application/views/404_view.php'); // provide your own HTML for the error page
+            //include('/app/application/views/404_view.php'); // provide your own HTML for the error page
+            include('application/views/404_view.php');
             die();
             /*$host = 'https://'.$_SERVER['HTTP_HOST'].'/';
             header('HTTP/1.1 404 Not Found');

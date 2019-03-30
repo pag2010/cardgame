@@ -1,4 +1,5 @@
 <?php
+    session_start();
     class Controller_Auth extends Controller
     {
         function __construct()
@@ -14,6 +15,9 @@
         function action_registration()
         {
             $this->view->generate('auth/registration_view.php', 'template_view.php');
+            if (isset($_POST['submit'])){
+                $this->model->login=$_POST['login'];
+            }
         }
         function action_login()
         {
@@ -25,6 +29,8 @@
                     echo 'Введён неверный логин или пароль';
                 }else{
                    if ((strcmp(hash ('sha256', $_POST['password']), $this->model->password_hash))==0){
+                       $_SESSION['logged_in']=true;
+                       $_SESSION['login']=$_POST['login'];
                         echo 'Авторизация пройдена успешно!';
                    }else{
                        echo 'Введён неверный логин или пароль';
