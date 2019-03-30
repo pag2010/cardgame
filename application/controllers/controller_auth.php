@@ -14,7 +14,7 @@
         }
         function action_registration()
         {
-            $this->view->generate('auth/registration_view.php', 'template_view.php');
+            $this->view->generate('auth/registration_view.php', 'template_view.php', 'auth_js.php');
             if (isset($_POST['submit'])){
                 $this->model->login=$_POST['login'];
             }

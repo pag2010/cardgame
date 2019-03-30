@@ -1,8 +1,38 @@
-function onSubmitClick(){
+$(document).ready(function(){
+    $('#password').blur(function(){
+        var Form = document.forms["auth_reg"];
+        var passwordBox=Form.elements["password"];
+        passwordBox.value=SHA256(passwordBox.value);
+    });
+
+    $('#password_confirm').blur(function(){
+        var Form = document.forms["auth_reg"];
+        var passwordBox=Form.elements["password_confirm"];
+        passwordBox.value=SHA256(passwordBox.value);
+    });
+});
+
+
+function onSubmitClickOnLogin(){
     var Form = document.forms["auth_login"];
     var passwordBox=Form.elements["password"];
     passwordBox.value=SHA256(passwordBox.value);
     return true;  
+}
+
+function onSubmitClickOnReg(){
+    var Form = document.forms["auth_reg"];
+    var passwordBox1=Form.elements["password"];
+    var passwordBox2=Form.elements["password_confirm"];
+    if (passwordBox1.value.localeCompare(passwordBox2.value)==0){
+        /*.value=SHA256(passwordBox1.value);
+        passwordBox2.value=SHA256(passwordBox2.value);*/
+        alert("Пароли совпадают");
+        return true;
+    }else{
+        alert("Пароли не совпадают");
+        return false;
+    }     
 }
 
 /**
