@@ -31,14 +31,14 @@
                 $this->model->login=$_POST['login'];
                 $err=$this->model->get_data();
                 if ($err!=null){ 
-                    echo 'Введён неверный логин или пароль';
+                    echo 'Введён неверный логин или пароль, пользователь не найден';
                 }else{
                    if ((strcmp($_POST['password'], $this->model->password_hash))==0){
                        $_SESSION['logged_in']=true;
                        $_SESSION['login']=$_POST['login'];
                         echo 'Авторизация пройдена успешно!';
                    }else{
-                       echo 'Введён неверный логин или пароль';
+                       echo 'Введён неверный логин или пароль '.$_POST['login'].' '.$_POST['password'];
                    }
                 }
             }
