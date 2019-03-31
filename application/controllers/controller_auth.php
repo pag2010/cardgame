@@ -14,19 +14,24 @@
         }
         function action_registration()
         {
-            $this->view->generate('auth/registration_view.php', 'template_view.php', 'auth_js.php');
+            $this->view->generate('auth/registration_view.php', 'template_view.php', 'auth_registration_js.php');
             if (isset($_POST['submit'])){
                 if (strcmp($_POST['password'], $_POST['password_confirm'])==0){
                     $this->model->login=$_POST['login'];
+                    $this->model->password_hash=$_POST['password'];
                     $this->model->email=$_POST['email'];
-                    $this->password_hash=$_POST['password'];
                     echo "На сервере получены учетные данные";
+                    $err=$this->model->set_data();
+                    if ($err!=null){
+                        echo "Произошла ошибка";
+                        return;
+                    }
                 }
             }
         }
         function action_login()
         {
-            $this->view->generate('auth/login_view.php', 'template_view.php', 'auth_js.php');
+            $this->view->generate('auth/login_view.php', 'template_view.php', 'auth_login_js.php');
             if (isset($_POST['submit'])){
                 $this->model->login=$_POST['login'];
                 $err=$this->model->get_data();
