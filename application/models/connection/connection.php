@@ -4,4 +4,13 @@
     $user = $url["user"];
     $password = $url["pass"];
     $database = substr($url["path"],1);
+
+    if ($_SERVER['SERVER_NAME'] == "card-collection-game"){
+        $host = 'localhost';
+        $user = 'root';
+        $password = '';
+        $database = 'card_game';
+    }else{
+        
+    }
 ?>
