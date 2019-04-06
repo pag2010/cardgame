@@ -11,7 +11,12 @@
             // получаем имя контроллера
             if ( !empty($routes[1]) )
             {	
-                $controller_name = $routes[1];
+                $g=(strpos($routes[1], '?'));
+                if ($g==false){
+                    $controller_name = $routes[1];
+                }else{
+                    $controller_name=substr($routes[1],0 , $g);
+                }
             }
             
             // получаем имя экшена

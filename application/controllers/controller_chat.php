@@ -11,13 +11,18 @@
 	    function action_index()
 	    {
             if (isset($_SESSION['login'])){
-                $this->view->generate('chat/info_chat_view.php', 'template_view.php');
-                $this->model->get_data();
-                $arr=$this->model->chat_id;
-                for($i=0; $i<count($arr); $i++){
-                    echo "<input name='submit' type='submit' value='".$arr[$i]."' method=GET>";
+                if (isset($_GET['open_chat'])){
+                    echo "Чат ".$_GET['open_chat'];
                 }
-
+                else{
+                    $this->view->generate('chat/info_chat_view.php', 'template_view.php');
+                    $this->model->get_data();
+                    $arr=$this->model->chat_id;
+                    for($i=0; $i<count($arr); $i++){
+                        echo "<input name='open_chat' type='submit' value='".$arr[$i]."'>";
+                    }
+                    echo '</form>';
+                }
             }else{
                 echo '<meta http-equiv="refresh" content="0;URL=/auth/login">';
             }
