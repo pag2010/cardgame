@@ -11,7 +11,12 @@
             // получаем имя контроллера
             if ( !empty($routes[1]) )
             {	
-                $controller_name = $routes[1];
+                $g=(strpos($routes[1], '?'));
+                if ($g==false){
+                    $controller_name = $routes[1];
+                }else{
+                    $controller_name=substr($routes[1],0 , $g);
+                }
             }
             
             // получаем имя экшена
@@ -22,9 +27,10 @@
     
             // добавляем префиксы
             $model_name = 'Model_'.$controller_name;
+            $storage_name='storage_'.$controller_name;
             $controller_name = 'Controller_'.$controller_name;
             $action_name = 'action_'.$action_name;
-    
+            
             // подцепляем файл с классом модели (файла модели может и не быть)
     
             $model_file = strtolower($model_name).'.php';
@@ -35,6 +41,13 @@
             {
                 //include "/app/application/models/".$model_file;
                 include "application/models/".$model_file;
+            }
+
+            $storage_file = strtolower($storage_name).'.php';
+            $storage_path = "application/storages/".$storage_file;
+            if(file_exists($storage_path))
+            {
+                include "application/storages/".$storage_file;
             }
     
             // подцепляем файл с классом контроллера
@@ -58,7 +71,7 @@
             // создаем контроллер
             $controller = new $controller_name;
             $action = $action_name;
-            
+            //echo $action;
             if(method_exists($controller, $action))
             {
                 // вызываем действие контроллера
