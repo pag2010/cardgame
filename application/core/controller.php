@@ -2,6 +2,7 @@
     class Controller {
 	
         public $model;
+        public $storage;
         public $view;
         
         function __construct()
