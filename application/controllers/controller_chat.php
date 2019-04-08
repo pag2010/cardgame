@@ -16,29 +16,12 @@
                 $login=$_SESSION['login'];
                 if (isset($_GET['open_chat'])){
                     $chat_id=$_GET['open_chat'];
-                    if (isset($_SESSION['chat'.$chat_id])){
-                        $this->model->messages=$_SESSION['chat'.$chat_id];
-                    }else{
-                        //$err=$this->model->get_msg($chat_id);
-                        $err=$this->storage->get_msg($chat_id);
+                    $err=$this->storage->get_msg($chat_id);
                         if ($err!=null){
                             ErrorHandler::addError($err);
                             ErrorHandler::displayErrors();
                             return;
                         }
-                        $_SESSION['chat'.$chat_id]=$this->model->messages; 
-                    }
-                    if (count($this->model->messages['sender'])>0){
-                        for ($i=0;$i<count($this->model->messages['sender']);$i++){
-                            if ($this->model->messages['sender'][$i]!=$login){
-                                echo $this->model->messages['sender'][$i].": ".$this->model->messages['message'][$i].'</br>';
-                            }else{
-                                echo "you: ".$this->model->messages['message'][$i].'</br>';
-                            }
-                        }
-                    }else{
-                        echo "У вас пока нет сообщений.";
-                    }
                     if (isset($_POST['submit'])){
                         $err=$this->model->add_msg($chat_id, $_SESSION['login'], $_POST['msg']);
                         if ($err!=null){
@@ -46,20 +29,20 @@
                             ErrorHandler::displayErrors();
                             return;
                         }
-                        $_SESSION['chat'.$chat_id]['sender'][]=$_SESSION['login'];
-                        $_SESSION['chat'.$chat_id]['message'][]=$_POST['msg'];
-                        echo '<meta http-equiv="refresh" content="0;URL=/chat?open_chat='.$chat_id.'">';
                     }
-                    $this->view->generate('chat/opened_chat_view.php', 'template_view.php');
+                    $this->view->generate('chat/opened_chat_view.php', 'template_view.php','opened_chat_js.php', 'opened_chat_css.php', $this->model->messages);
                 }
                 else{
-                    $this->view->generate('chat/info_chat_view.php', 'template_view.php');
                     $this->model->get_chat($_SESSION['login']);
-                    $arr=$this->model->chat_id;
-                    for($i=0; $i<count($arr); $i++){
-                        echo "<input name='open_chat' type='submit' value='".$arr[$i]."'>";
-                    }
-                    echo '</form>';
+                    $chats=$this->model->chat_id;
+                    $login1=$this->model->login1;
+                    $login2=$this->model->login2;
+                    $arr['title']="Чат";
+                    $arr['login']=$_SESSION['login'];
+                    $arr['chats']=$chats;
+                    $arr['login1']=$login1;
+                    $arr['login2']=$login2;
+                    $this->view->generate('chat/info_chat_view.php', 'template_view.php', 'info_chat_js.php', 'info_chat_css.php', $arr);
                 }
             }else{
                 echo '<meta http-equiv="refresh" content="0;URL=/auth/login">';
