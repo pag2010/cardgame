@@ -1,0 +1,66 @@
+body{
+    background: rgb(238, 238, 238);
+}
+
+.chat-history{
+    width: 50vw;
+    margin: auto;
+    background: rgb(252, 252, 252);
+    border: none;
+    border-radius: 5px;
+    height: 90vh;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+.input-form{
+    margin: auto;
+    width: 25%;
+}
+
+.input-form input{
+    border-radius: 3px;
+}
+
+.input-msg {
+    outline: none;
+    border-right: none;
+    border-left: none;
+    border-top: none;
+    border-bottom: 3px solid rgb(82, 111, 245);
+}
+
+.button{
+    border: none;
+    outline: none;
+    height: 2vw;
+    background: rgb(82, 111, 245);
+}
+
+table {
+    table-layout: fixed;
+    width:100% 
+}
+
+.login{
+    margin: auto;
+    width: 10%;
+    word-wrap: break-word;
+    color:rgb(1, 111, 161);
+}
+
+.msg{
+    width: 70%;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+.dots{
+    margin: auto;
+    width: 2%;
+}
+
+.time{
+    margin: auto;
+    width: 20%;
+    color: rgba(95, 95, 95, 0.473);
+}

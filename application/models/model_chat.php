@@ -14,6 +14,8 @@ class Model_Chat extends Model
 	}
 
 	public function check_connection(){
+		/*require_once 'application/models/connection/connection.php';
+		$this->mysqli = new mysqli($host, $user, $password, $database);*/
 		if ($this->mysqli->connect_errno) {
 			return ("Ошибка соединения: %s\n".$this->mysqli->connect_error);
 		}
@@ -64,10 +66,10 @@ class Model_Chat extends Model
 			$this->messages["sender"]=$login;
 			$this->messages["message"]=$message;
 			$result->free();
-			$this->mysqli->close();
+			//$this->mysqli->close();
 			return null;
 		}else{
-			$this->mysqli->close();
+			//$this->mysqli->close();
 			return ("Ошибка при выполнении запроса");
 		}
 	}

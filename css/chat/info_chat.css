@@ -1,0 +1,14 @@
+body{
+    background: rgb(238, 238, 238);
+}
+
+.chats{
+    width: 6vw;
+    background: rgb(252, 252, 252);
+    border: none;
+    border-radius: 5px;
+}
+
+.button{
+    background: rgb(1, 149, 218);
+}
