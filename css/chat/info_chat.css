@@ -1,14 +1,27 @@
 body{
+    text-align:center;
     background: rgb(238, 238, 238);
+    font-size:5vh;
 }
 
 .chats{
-    width: 6vw;
+    margin:auto;
+    width: 30vw;
     background: rgb(252, 252, 252);
     border: none;
     border-radius: 5px;
+    height: 60vh;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+table {
+    table-layout: auto;
+    width:100% 
 }
 
 .button{
+    width:20vw;
+    height:5vh;
     background: rgb(1, 149, 218);
 }

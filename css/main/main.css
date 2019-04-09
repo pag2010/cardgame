@@ -1,0 +1,17 @@
+body{
+    background: rgb(238, 238, 238);
+    font-size:5vh;
+}
+
+h1{
+    text-align:center;
+}
+
+.main{
+    background: rgb(248, 248, 248);
+    text-align:center;
+    width: 75vw;
+    margin: auto;
+    border: none;
+    border-radius: 5px;
+}
