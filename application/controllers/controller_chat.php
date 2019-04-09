@@ -22,14 +22,6 @@
                             ErrorHandler::displayErrors();
                             return;
                         }
-                    if (isset($_POST['submit'])){
-                        $err=$this->model->add_msg($chat_id, $_SESSION['login'], $_POST['msg']);
-                        if ($err!=null){
-                            ErrorHandler::addError($err);
-                            ErrorHandler::displayErrors();
-                            return;
-                        }
-                    }
                     $this->view->generate('chat/opened_chat_view.php', 'template_view.php','opened_chat_js.php', 'opened_chat_css.php', $this->model->messages);
                 }
                 else{
@@ -58,9 +50,18 @@
                     ErrorHandler::displayErrors();
                     return;
                 }
-                
             }
-            
+        }
+
+        function action_send(){
+            if (isset($_POST['submit'])){
+                $err=$this->model->add_msg($_POST['chat_id'], $_SESSION['login'], $_POST['msg']);
+                if ($err!=null){
+                    ErrorHandler::addError($err);
+                    ErrorHandler::displayErrors();
+                    return;
+                }
+            }
         }
     }
 ?>
