@@ -1,5 +1,6 @@
 body{
     background: rgb(238, 238, 238);
+    font-size:16;
 }
 
 .chat-history{
@@ -8,13 +9,13 @@ body{
     background: rgb(252, 252, 252);
     border: none;
     border-radius: 5px;
-    height: 90vh;
+    height: 80vh;
     overflow: scroll;
     overflow-x: hidden;
 }
 .input-form{
     margin: auto;
-    width: 25%;
+    width: 50vw;
 }
 
 .input-form input{
@@ -36,14 +37,14 @@ body{
     background: rgb(82, 111, 245);
 }
 
-table {
+.msg-table {
     table-layout: fixed;
     width:100% 
 }
 
 .login{
     margin: auto;
-    width: 10%;
+    width: 11%;
     word-wrap: break-word;
     color:rgb(1, 111, 161);
 }
@@ -63,4 +64,9 @@ table {
     margin: auto;
     width: 20%;
     color: rgba(95, 95, 95, 0.473);
+}
+
+textarea{
+   width: 42vw;
+   height: 15vh;
 }

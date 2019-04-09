@@ -13,11 +13,11 @@
     }
     echo "</div>";
 ?>
-<form class='input-form' name="make_msg" onsubmit="return onSubmitClick()" method="POST">
-<table>
+<form id="msg-form" class='input-form' name="make_msg" method="post">
+<table id="input-table" class="input-table">
     <tr>
-    <td><input autocomplete='off' class='input-msg' required name="msg" type="text" placeholder='Напишите сообщение'></td>
-    <td><input class='button' name="submit" type="submit" value="Отправить"></td>
+    <td><textarea id="msg" class='input-msg' placeholder='Напишите сообщение' cols="82" rows="4"></textarea></td>   
+    <td><input id="submit" class='button' name="submit" type="button" value="Отправить"></td>
     </tr>
 </table>
 </form>
