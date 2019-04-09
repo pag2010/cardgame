@@ -2,12 +2,12 @@ body{
     text-align:center;
     background: rgb(238, 238, 238);
     font-size:5vh;
-    
+
 }
 
 .chats{
     margin:auto;
-    width: 30vw;
+    width: 45vw;
     background: rgb(252, 252, 252);
     border: none;
     border-radius: 5px;
