@@ -17,9 +17,11 @@
                 echo '<meta http-equiv="refresh" content="0;URL=/auth/login">';
             }
         }
-        function action_collection()
-        {
-            
+        function action_collection(){
+            if (isset($_SESSION['login'])){
+                $this->model->get_collection($_SESSION['login']);
+                $this->view->generate('game/collection_view.php', 'template_view.php', 'none_js.php', 'card_css.php', $this->model->collection_card);
+            }
         }
     }
 ?>

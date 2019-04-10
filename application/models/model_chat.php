@@ -96,7 +96,7 @@ class Model_Chat extends Model
 		$err=$this->check_connection();
 		if ($err!=null){
 			return $err;
-		}
+		} 	
 		$query="INSERT INTO chats set login1="."'".$login1."', login2='".$login2."'";
 		if ($result = $this->mysqli->query($query)) {
 			////$this->mysqli->close();
