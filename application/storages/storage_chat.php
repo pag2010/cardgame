@@ -13,6 +13,7 @@
         public function get_msg($chat_id){
             $err=$this->model->get_chat($this->login);
             if ($err!=null){
+                $this->model->close_connection();
                 return $err;
             }
             $chats=$this->model->chat_id;
@@ -23,17 +24,21 @@
                 }
             }
             if (!$flag){
+                $this->model->close_connection();
                 return "Диалог не найден :(";
             }
             $err=$this->model->get_msg($chat_id);
             if ($err!=null){
+                $this->model->close_connection();
                 return $err;
             }
+            $this->model->close_connection();
         }
 
         public function add_chat($login){
             $err=$this->model->get_chat($this->login);
             if ($err!=null){
+                $this->model->close_connection();
                 return $err;
             }
             $login1=$this->model->login1;
@@ -45,12 +50,15 @@
                 }
             }
             if (!$flag){
+                $this->model->close_connection();
                 return "У вас уже существует диалог с этим пользователем";
             }
             $err=$this->model->add_chat($this->login, $login);
             if ($err!=null){
+                $this->model->close_connection();
                 return $err;
             }
+            $this->model->close_connection();
         }
     }
 ?>

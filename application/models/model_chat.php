@@ -9,19 +9,22 @@ class Model_Chat extends Model
 	private $mysqli;
 
 	function __construct(){
-		require_once 'application/models/connection/connection.php';
+		/*require_once 'application/models/connection/connection.php';
+		$this->mysqli = new mysqli($host, $user, $password, $database);*/
+	}
+
+	public function connect(){
+		include 'application/models/connection/connection.php';
 		$this->mysqli = new mysqli($host, $user, $password, $database);
 	}
 
 	public function check_connection(){
-		/*require_once 'application/models/connection/connection.php';
-		$this->mysqli = new mysqli($host, $user, $password, $database);*/
+		$this->connect();
 		if ($this->mysqli->connect_errno) {
 			return ("Ошибка соединения: %s\n".$this->mysqli->connect_error);
 		}
 		return null;
 	}
-
 	public function connect_to_data(){
 	
 	}
@@ -81,10 +84,10 @@ class Model_Chat extends Model
 		}
 		$query="INSERT INTO messages set chat_id=".$chat_id.", sender_login='".$sender."', message='".$msg."'";
 		if ($result = $this->mysqli->query($query)) {
-			$this->mysqli->close();
+			////$this->mysqli->close();
 			return null;
 		}else{
-			$this->mysqli->close();
+			////$this->mysqli->close();
 			return ("Ошибка при выполнении запроса");
 		}
 	}
@@ -96,12 +99,16 @@ class Model_Chat extends Model
 		}
 		$query="INSERT INTO chats set login1="."'".$login1."', login2='".$login2."'";
 		if ($result = $this->mysqli->query($query)) {
-			$this->mysqli->close();
+			////$this->mysqli->close();
 			return null;
 		}else{
-			$this->mysqli->close();
+			////$this->mysqli->close();
 			return ("Ошибка при выполнении запроса ".$this->mysqli->error);
 		}
+	}
+
+	public function close_connection(){
+		$this->mysqli->close();
 	}
 
 	public function set_data($chat_id, $sender, $msg){

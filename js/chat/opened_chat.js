@@ -2,6 +2,8 @@ var url;
 var chat;
 $(function(){
   urlstr=document.URL;
+  posc=urlstr.indexOf("chat");
+  mainUrl=urlstr.slice(0, posc);
   pos=urlstr.indexOf('=');
   chat=urlstr.slice(pos+1);
   $(".chat-history").scrollTop($(".chat-history")[0].scrollHeight);
@@ -9,7 +11,7 @@ $(function(){
     if ($("#msg").val()!=""){
       $.ajax({
         type: "POST",
-        url: "http://card-collection-game/chat/send",
+        url: mainUrl+"chat/send",
         data: { submit:"true", chat_id: parseInt(chat), msg: $("#msg").val() }
       })
       $("#msg").val("");
@@ -20,7 +22,7 @@ $(function(){
       if ($("#msg").val()!=""){
         $.ajax({
           type: "POST",
-          url: "http://card-collection-game/chat/send",
+          url: mainUrl+"chat/send",
           data: { submit:"true", chat_id: parseInt(chat), msg: $("#msg").val() }
         })
         $("#msg").val("");
