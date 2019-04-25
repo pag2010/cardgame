@@ -36,27 +36,31 @@
         }
         function action_login()
         {
-            $this->view->generate('auth/login_view.php', 'template_view.php', 'auth_login_js.php');
+            //$this->view->generate('auth/login_view.php', 'template_json_view.php', 'auth_login_js.php');
             //$this->view->generate('none_view.php', 'template_json_view.php', 'auth_login_js.php');
             if (isset($_POST['submit'])){
                 $this->model->login=$_POST['login'];
                 $err=$this->model->get_data();
                 if ($err!=null){ 
+                    var_dump(http_response_code(401));
                     //echo 'Введён неверный логин или пароль, пользователь не найден';
                     ErrorHandler::addError($err);
                     ErrorHandler::displayErrors();
+                    
                 }else{
                    if ((strcmp($_POST['password'], $this->model->password_hash))==0){
                        $_SESSION['logged_in']=true;
                        $_SESSION['login']=$_POST['login'];
-                       echo '<meta http-equiv="refresh" content="0;URL=/game/">';
                    }else{
+                       var_dump(http_response_code(401));
                        ErrorHandler::addError('Введён неверный логин или ПАРОЛЬ');
                        ErrorHandler::displayErrors();
                    }
                 }
             }
-            
+            else{
+            $this->view->generate('auth/login_view.php', 'template_json_view.php', 'auth_login_js.php');
+            }
         }
         function action_update()
         {
