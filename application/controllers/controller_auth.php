@@ -37,6 +37,7 @@
         function action_login()
         {
             $this->view->generate('auth/login_view.php', 'template_view.php', 'auth_login_js.php');
+            //$this->view->generate('none_view.php', 'template_json_view.php', 'auth_login_js.php');
             if (isset($_POST['submit'])){
                 $this->model->login=$_POST['login'];
                 $err=$this->model->get_data();
