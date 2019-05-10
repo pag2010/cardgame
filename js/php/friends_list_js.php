@@ -1,0 +1,1 @@
+<script src="/js/react/friends_list.js" type="text/javascript"></script>

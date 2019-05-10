@@ -1,5 +1,5 @@
 <?php
-    echo "<p>Друзья</p>";
+    /*echo "<p>Друзья</p>";
     echo "<div class='friend-list'>";
     if (isset($data['friends'])){
         foreach ($data['friends'] as $d){
@@ -22,5 +22,5 @@
             echo "<div>".$d."</div>";
         }
     }
-    echo "</div";
+    echo "</div";*/
 ?>

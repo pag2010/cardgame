@@ -65,9 +65,12 @@
                 $arr['players']=$players;
                 $arr['subscribers']=$subscribers;
                 //print_r($arr);
-                $this->view->generate('friends/friends_list_view.php', 'template_view.php','none_js.php', 'none_css.php', $arr);
+                //$this->view->generate('friends/friends_list_view.php', 'template_view.php','none_js.php', 'none_css.php', $arr);
+                $this->view->generate('friends/friends_list_view.php', 'template_json_view.php','friends_list_js.php', 'none_css.php', $arr);
+                //echo '<div>lolka123</div>';
             }else{
-                echo '<meta http-equiv="refresh" content="0;URL=/auth/login">';
+                echo '<div>lolka</div>';
+                //echo '<meta http-equiv="refresh" content="0;URL=/auth/login">';
             }
         }
     }
