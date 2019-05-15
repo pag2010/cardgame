@@ -59,7 +59,7 @@
                 }
             }
             else{
-            $this->view->generate('auth/login_view.php', 'template_json_view.php', 'auth_login_js.php');
+            $this->view->generate('auth/login_view.php', 'template_react_view.php', 'auth_login_js.php');
             }
         }
         function action_update()

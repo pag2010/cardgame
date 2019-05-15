@@ -23,4 +23,6 @@
         }
     }
     echo "</div";*/
+    //echo json_encode($arr);
+    print_r($arr);
 ?>

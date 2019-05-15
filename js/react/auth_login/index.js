@@ -206,19 +206,23 @@ class LoginForm extends React.Component {
       return (
         <div className="form_class">
           <form onSubmit={this.onSubmit} method="Post">
-          <table>
-              <tr>
-                <td><label>Логин</label></td>
-                <td><input type="text" name="login" autocomplete="off" value={this.state.login} onChange={this.onLoginChange}/></td>
-              </tr>
-              <tr>
-                <td><label>Пароль:</label></td>
-                <td><input type="password" name="password" value={this.state.password} onChange={this.onPasswordChange}/></td>
-            </tr>
-            <tr>
-                <td><input type="submit" value="Submit" /></td>
-            </tr>
-            </table>
+            <div className='d-tr'>
+              <div className='login'>
+                <div className='d-td login'>Логин:</div>
+                <div className='d-td'><input type="text" name="login" autocomplete="off" value={this.state.login} onChange={this.onLoginChange}/></div>
+              </div>
+            </div>
+            <div className='d-tr'>
+              <div className='password'>
+                <div className='d-td password'>Пароль:</div>
+                <div className='d-td'><input type="password" name="password" value={this.state.password} onChange={this.onPasswordChange}/></div>
+              </div>
+            </div>
+            <div className='d-tr'>
+              <div className='d-td'>
+                <input type="submit" value="Войти" />
+              </div>
+            </div>
           </form>
           {this.state.err==true && <p>{errmes}</p>}
         </div>

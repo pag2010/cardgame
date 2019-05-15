@@ -62,6 +62,26 @@ class Model_Friends extends Model
 			return ("Ошибка при выполнении запроса1 ".$this->mysqli->error);
 		}
 	}
+
+	public function get_paged_friends($login, $page, $count){
+        $err=$this->check_connection();
+        if ($err!=null){
+            return $err;
+		}
+		$start=$page*$count;
+        $query="SELECT friends.player FROM friends INNER JOIN friends AS friends1 ON friends.subscriber=friends1.player WHERE friends.subscriber=friends1.player AND friends.player=friends1.subscriber AND friends.subscriber='".$login."' LIMIT ".$start.", ".$count;
+        $friends;
+        if ($result = $this->mysqli->query($query)) {
+			while ($row = $result->fetch_assoc()) {
+				$friends[]=$row["player"];
+			}
+			$result->free();
+			$this->friends=$friends;
+			return null;
+		}else{
+			return ("Ошибка при выполнении запроса1 ".$this->mysqli->error);
+		}
+	}
 	
 	public function get_all_players($login){
         $err=$this->check_connection();
@@ -69,6 +89,27 @@ class Model_Friends extends Model
             return $err;
 		}
         $query="SELECT player FROM friends WHERE subscriber='".$login."'";
+        $players;
+        if ($result = $this->mysqli->query($query)) {
+			while ($row = $result->fetch_assoc()) {
+				$players[]=$row["player"];
+			}
+			$result->free();
+			$this->players=$players;
+			return null;
+		}else{
+			return ("Ошибка при выполнении запроса1 ".$this->mysqli->error);
+		}
+	}
+
+	public function get_paged_players($login, $page, $count){
+        $err=$this->check_connection();
+        if ($err!=null){
+            return $err;
+		}
+		$start=$page*$count;
+		$query="SELECT player FROM friends WHERE subscriber='".$login."' LIMIT ".$start.", ".$count;
+		//$query="SELECT player FROM friends WHERE subscriber='".$login."' LIMIT 0, ".$count;
         $players;
         if ($result = $this->mysqli->query($query)) {
 			while ($row = $result->fetch_assoc()) {
