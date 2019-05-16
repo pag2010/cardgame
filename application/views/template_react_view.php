@@ -13,7 +13,6 @@
     <div id="root">
 
     </div>
-    <?php /*include "js/php/auth_login_js.php";*/ include 'application/views/'.$content_view;?>
 </body>
 <?php include 'js/php/'.$content_js; ?>
 </html>

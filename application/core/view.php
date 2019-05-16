@@ -12,7 +12,7 @@
             echo json_encode($data, JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
         }
 
-        function generate_react($template_view, $content_js='none_js.php')
+        function generate_react($template_view, $content_js='none_js.php', $data=null)
         {
             include 'application/views/'.$template_view;
         }

@@ -53,12 +53,13 @@ class Model_Auction extends Model
         if ($err!=null){
             return $err;
         }
-        $query="INSERT INTO auction_cards values (0, ".$auction_item->seller.", null, ".$auction_item->card->id.", ".$auction_item->quantity.", ".$auction_item->start_price.", null, ".$auction_item->start_date.", ".$auction_item->sell_date.")";
+        $query="INSERT INTO auction_cards values (0, '".$auction_item->seller."', null, ".$auction_item->card->id.", ".$auction_item->quantity.", ".$auction_item->start_price.", null, '".$auction_item->start_date."', '".$auction_item->sell_date."')";
         if ($result = $this->mysqli->query($query)) {
 			return null;
 		}else{
 			return ("Ошибка при выполнении запроса ".$this->mysqli->error);
-		}
+        }
+        //echo $auction_item->seller;
     }
 
 	public function close_connection(){

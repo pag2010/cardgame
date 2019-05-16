@@ -12,41 +12,42 @@
 
 	    function action_index(){
             if (isset($_SESSION['login'])){
-               $err=$this->model->get_all_auction();
-               if ($err!=null){
-                ErrorHandler::addError($err);
-                ErrorHandler::displayErrors();
-                $this->model->close_connection();
-                return;
-               }
-               $this->model->close_connection();
-               $this->view->generatejson($this->model->auction_list); 
+                if (isset($_POST['submit'])){
+                    $err=$this->model->get_all_auction();
+                    if ($err!=null){
+                        ErrorHandler::addError($err);
+                        ErrorHandler::displayErrors();
+                        $this->model->close_connection();
+                        return;
+                    }
+                    $this->model->close_connection();
+                    $this->view->generatejson($this->model->auction_list);
+                }else{
+                    $this->view->generate_react('template_react_view.php', 'auction_js.php');
+                    //$this->view->generate('friends/friends_add_view.php', 'template_view.php','none_js.php', 'none_css.php');
+                } 
             }else{
                 echo '<meta http-equiv="refresh" content="0;URL=/auth/login">';
             }
         }
 
         function action_add(){
-            //if (isset($_SESSION['login'])){
+            if (isset($_SESSION['login'])){
                 if (isset($_POST['submit'])){
-                    //$err=$this->model->get_all_auction();
-                    /*if ($err!=null){
-                    ErrorHandler::addError($err);
-                    ErrorHandler::displayErrors();
+                    $card=new Card($_POST['card_id'], null, null, null, null, null, null, null);
+                    $auction_item = new Auction_Item(null, $_SESSION['login'], null, $card, $_POST["quantity"], $_POST["start_price"], null, date('Y-m-d H:i:s'), $_POST["sell_date"]);
+                    $err=$this->model->add_item($auction_item);
+                    if ($err!=null){
+                        ErrorHandler::addError($err);
+                        ErrorHandler::displayErrors();
+                        $this->model->close_connection();
+                        return;
+                    }
                     $this->model->close_connection();
-                    return;
-                    }*/
-                    $auction_item = json_decode(file_get_contents('php://input'));
-                    print_r($auction_item);
-                    //$auction_item = new Auction_Item($_POST["id"], $row["seller"],$row["buyer"], $card, $row["quantity"], $row["start_price"],$row["sell_price"], $row["start_date"], $row["sell_date"]);
-                // $this->model->close_connection();
-                // $this->view->generatejson($this->model->auction_list); 
-                }else{
-                    $this->view->generate_react('template_react_view.php','friends_list_js.php');
                 }
-            /* }else{
+                }else{
                  echo '<meta http-equiv="refresh" content="0;URL=/auth/login">';
-             } */
+             }
         }
     }
 ?>
