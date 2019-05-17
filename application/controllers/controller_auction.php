@@ -49,5 +49,22 @@
                  echo '<meta http-equiv="refresh" content="0;URL=/auth/login">';
              }
         }
+
+        function action_changePrice(){
+            if (isset($_SESSION['login'])){
+                if (isset($_POST['submit'])){
+                    $err=$this->model->change_price($_POST['id'], $_POST['new_price'], $_SESSION['login']);
+                    if ($err!=null){
+                        ErrorHandler::addError($err);
+                        ErrorHandler::displayErrors();
+                        $this->model->close_connection();
+                        return;
+                    }
+                    $this->model->close_connection();
+                }
+                }else{
+                 echo '<meta http-equiv="refresh" content="0;URL=/auth/login">';
+             }
+        }
     }
 ?>
