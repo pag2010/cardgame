@@ -42,6 +42,7 @@
         }
         function action_create()
         {
+            if (isset($_SESSION['login'])){
             $this->view->generate('chat/create_chat_view.php', 'template_view.php');
             if (isset($_POST['submit'])){
                 $err=$this->storage->add_chat($_POST['login']);
@@ -52,6 +53,9 @@
                 }
                 echo '<meta http-equiv="refresh" content="0;URL=/chat">';
             }
+        }else{
+            echo '<meta http-equiv="refresh" content="0;URL=/auth/login">';
+        }
         }
 
         function action_send(){
