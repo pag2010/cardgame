@@ -32,10 +32,13 @@ CREATE TABLE IF NOT EXISTS `auction_cards` (
   KEY `FK_auction_cards_collections` (`seller`,`card_id`),
   CONSTRAINT `FK_auction_cards_cards` FOREIGN KEY (`card_id`) REFERENCES `cards` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_auction_cards_user_auth` FOREIGN KEY (`seller`) REFERENCES `user_auth` (`login`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
 -- Дамп данных таблицы card_game.auction_cards: ~2 rows (приблизительно)
 /*!40000 ALTER TABLE `auction_cards` DISABLE KEYS */;
+INSERT INTO `auction_cards` (`id`, `seller`, `card_id`, `quantity`, `start_price`, `start_date`, `sell_date`) VALUES
+	(23, 'admin', 2, 1, 10, '2019-05-21 17:48:42', '2019-05-21 17:48:43'),
+	(24, 'lol', 1, 1, 10, '2019-05-21 18:37:51', '2019-05-21 18:37:52');
 /*!40000 ALTER TABLE `auction_cards` ENABLE KEYS */;
 
 -- Дамп структуры для событие card_game.auction_cleaning
@@ -98,10 +101,14 @@ CREATE TABLE IF NOT EXISTS `auction_queue` (
   KEY `FK_auction_queue_user_auth` (`member`),
   CONSTRAINT `FK_auction_queue_auction_cards` FOREIGN KEY (`auction_id`) REFERENCES `auction_cards` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_auction_queue_user_auth` FOREIGN KEY (`member`) REFERENCES `user_auth` (`login`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
 
 -- Дамп данных таблицы card_game.auction_queue: ~3 rows (приблизительно)
 /*!40000 ALTER TABLE `auction_queue` DISABLE KEYS */;
+INSERT INTO `auction_queue` (`id`, `auction_id`, `member`, `price`) VALUES
+	(44, 24, 'pag', 12),
+	(45, 23, 'pag', 18),
+	(47, 23, 'lol', 20);
 /*!40000 ALTER TABLE `auction_queue` ENABLE KEYS */;
 
 -- Дамп структуры для процедура card_game.auction_queue_proc
@@ -215,7 +222,7 @@ CREATE TABLE IF NOT EXISTS `chats` (
   CONSTRAINT `FK_chats_user_auth_2` FOREIGN KEY (`login2`) REFERENCES `user_auth` (`login`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
--- Дамп данных таблицы card_game.chats: ~3 rows (приблизительно)
+-- Дамп данных таблицы card_game.chats: ~4 rows (приблизительно)
 /*!40000 ALTER TABLE `chats` DISABLE KEYS */;
 INSERT INTO `chats` (`id`, `login1`, `login2`) VALUES
 	(1, 'admin', 'pag'),
@@ -237,17 +244,14 @@ CREATE TABLE IF NOT EXISTS `collections` (
   KEY `index` (`login`,`card_id`),
   CONSTRAINT `FK_collections_cards` FOREIGN KEY (`card_id`) REFERENCES `cards` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_collections_user_auth` FOREIGN KEY (`login`) REFERENCES `user_auth` (`login`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
--- Дамп данных таблицы card_game.collections: ~4 rows (приблизительно)
+-- Дамп данных таблицы card_game.collections: ~3 rows (приблизительно)
 /*!40000 ALTER TABLE `collections` DISABLE KEYS */;
 INSERT INTO `collections` (`id`, `login`, `card_id`, `quantity`) VALUES
-	(3, 'pag', 5, 13),
-	(5, 'lol', 1, 6),
-	(6, 'lol', 2, 1),
-	(8, 'pag', 2, 17),
-	(9, 'admin', 2, 6),
-	(11, 'admin', 5, 10);
+	(2, 'admin', 2, 2),
+	(3, 'pag', 5, 3),
+	(5, 'lol', 1, 5);
 /*!40000 ALTER TABLE `collections` ENABLE KEYS */;
 
 -- Дамп структуры для таблица card_game.decks
@@ -321,27 +325,13 @@ CREATE TABLE IF NOT EXISTS `friends` (
   CONSTRAINT `FK_friends_user_auth_2` FOREIGN KEY (`player`) REFERENCES `user_auth` (`login`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
--- Дамп данных таблицы card_game.friends: ~2 rows (приблизительно)
+-- Дамп данных таблицы card_game.friends: ~3 rows (приблизительно)
 /*!40000 ALTER TABLE `friends` DISABLE KEYS */;
 INSERT INTO `friends` (`id`, `subscriber`, `player`) VALUES
 	(1, 'admin', 'pag'),
 	(2, 'pag', 'admin'),
 	(3, 'admin', 'lol');
 /*!40000 ALTER TABLE `friends` ENABLE KEYS */;
-
--- Дамп структуры для функция card_game.frozen_money
-DROP FUNCTION IF EXISTS `frozen_money`;
-DELIMITER //
-CREATE DEFINER=`root`@`%` FUNCTION `frozen_money`(
-	`user_login` VARCHAR(50)
-
-) RETURNS int(11)
-BEGIN
-	declare frozen_auction_money int;
-	SELECT SUM(price) FROM auction_queue WHERE member=user_login into frozen_auction_money;
- 	return frozen_auction_money;
-END//
-DELIMITER ;
 
 -- Дамп структуры для таблица card_game.kind
 DROP TABLE IF EXISTS `kind`;
@@ -467,66 +457,106 @@ BEGIN
 	declare quantity_sell int;
 	declare quantity_sell_old int;
 	declare quantity_current int;
-	declare quantity_user int;
 	declare trans int;
 	declare x int;
 	DECLARE done INT DEFAULT FALSE;
-	DECLARE cur1 CURSOR FOR SELECT auction_cards.id, seller, member, price, card_id, quantity FROM auction_cards INNER JOIN auction_queue ON auction_cards.id=auction_queue.auction_id where sell_date<=NOW() ORDER BY id desc, price desc;
+	DECLARE cur1 CURSOR FOR SELECT auction_cards.id, seller, member, price, card_id, quantity FROM auction_cards INNER JOIN auction_queue ON auction_cards.id=auction_queue.auction_id where sell_date<=NOW() ORDER BY price desc;
 	DECLARE cur2 CURSOR for select id, seller, card_id, quantity from auction_cards where sell_date<NOW();
 	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+	
+	CALL `delete_duplicate`();
 	
 	OPEN cur1;
 	set autocommit=0;
 	set start_proc=0;
-	set trans=0;
+	
 	 read_loop: LOOP
     FETCH cur1 into id_clean, seller_clean, buyer_current, price_current, card_current, quantity_sell;
-    	IF done THEN
-	    	
-      	LEAVE read_loop;
-    	END IF;
+    IF done THEN
+    	if trans=0 then
+	   start transaction;
+	   	select quantity from collections where login=seller_clean_old and card_id=card_current_old into x;
+	   	if x is not null then
+	   		update collections set quantity=x+quantity_sell_old where login=seller_clean_old and card_id=card_current_old;
+	   	else
+	   		insert into collections (login, card_id, quantity) values (seller_clean_old, card_current_old, quantity_sell_old);
+	   	end if;
+	   	delete from auction_cards where id=id_clean;
+	   	commit;
+	   end if;
+      LEAVE read_loop;
+    END IF;
     
-			start transaction;
-			select money from user_auth where login=buyer_current into money_buyer;
-			SELECT frozen_money(buyer_current) AS frozen_money into x;
-			if money_buyer-x>=0 then
-				select quantity from collections where login=buyer_current and card_id=card_current into quantity_user;
-				if quantity_user is null then
-					insert into collections (login, card_id, quantity) values (buyer_current, card_current, quantity_sell);
-				else
-					update collections set quantity=quantity_sell+quantity_user where login=buyer_current and card_id=card_current;
-				end if;
-				select money from user_auth where login=seller_clean into money_seller;
-				update user_auth set money=money_buyer-price_current where login=buyer_current;
-				update user_auth set money=money_seller+price_current where login=seller_clean;
-			else
-				delete from auction_queue where member=buyer_current and auction_id=id_clean; 
-			end if;
-			delete from auction_cards where id=id_clean;
-			commit;
-  	END LOOP;
-  CLOSE cur1; 
+	 if start_proc=0 then
+	 	set id_current=id_clean;
+	 	set quantity_sell_old=quantity_sell;
+	 	set card_current_old=card_current;
+	 	set seller_clean_old=seller_clean;
+	 	set start_proc=1;
+	 	set trans=0;
+	 end if;
+	 
+	 if id_current<>id_clean then
+	   if trans=0 then
+	   start transaction;
+	   	select quantity from collections where login=seller_clean_old and card_id=card_current_old into x;
+	   	if x is not null then
+	   		update collections set quantity=x+quantity_sell_old where login=seller_clean_old and card_id=card_current_old;
+	   	else
+	   		insert into collections (login, card_id, quantity) values (seller_clean_old, card_current_old, quantity_sell_old);
+	   	end if;
+	   	delete from auction_cards where id=id_clean;
+	   commit;
+	   end if;
+	   
+	 	set id_current=id_clean;
+	 	set quantity_sell_old=quantity_sell;
+	 	set card_current_old=card_current;
+	 	set seller_clean_old=seller_clean;
+	 	set trans=0;
+	 end if;		
+		
+		if trans=0 then
+    start transaction;
+    		
+	   select money from user_auth where login=buyer_current into money_buyer;
+	   if money_buyer>=price_current then
+	    	update user_auth set money=money_buyer-price_current where login=buyer_current;
+	    	select quantity from collections where login=buyer_current and card_id=card_current into quantity_current;
+	    	if quantity_current is not null then
+	    		update collections set quantity=quantity_current+quantity_sell where login=buyer_current and card_id=card_current;
+	    	else
+	    		insert into collections (login, card_id, quantity) values (buyer_current, card_current, quantity_sell);
+	    	end if;
+	    	select money from user_auth where login=seller_clean into money_seller;
+	    	update user_auth set money=money_seller+price_current where login=seller_clean;
+	    	delete from auction_cards where id=id_clean;
+	    	set trans=1;
+	    	commit;
+	   end if;
+	   end if;
+	END LOOP;
+  CLOSE cur1;
   
-  set done=false;
+  SET done = false;
   open cur2;
   read_loop: LOOP
-    FETCH cur2 into id_clean, seller_clean, card_current, quantity_sell;
-    	IF done THEN
-	    	
-      	LEAVE read_loop;
-    	END IF;
-    	
-    	start transaction;
-    	select quantity from collections where login=seller_clean and card_id=card_current into quantity_user;
-		if quantity_user is null then
-			insert into collections (login, card_id, quantity) values (seller_clean, card_current, quantity_sell);
-		else
-			update collections set quantity=quantity_sell+quantity_user where login=seller_clean and card_id=card_current;
-		end if;
-		delete from auction_cards where id=id_clean;
-		commit;	
-  	END LOOP;
-  CLOSE cur2; 
+  FETCH cur2 into id_clean, seller_clean_old, card_current_old, quantity_sell_old;
+  IF done THEN
+      LEAVE read_loop;
+    END IF;
+    start transaction;
+	   	select quantity from collections where login=seller_clean_old and card_id=card_current_old into x;
+	   	if x is not null then
+	   		update collections set quantity=x+quantity_sell_old where login=seller_clean_old and card_id=card_current_old;
+	   	else
+	   		insert into collections (login, card_id, quantity) values (seller_clean_old, card_current_old, quantity_sell_old);
+	   	end if;
+	   	delete from auction_cards where id=id_clean;
+	   commit;
+  END LOOP;
+  
+  close cur2;
 END//
 DELIMITER ;
 
@@ -539,7 +569,7 @@ CREATE TABLE IF NOT EXISTS `rarity` (
   PRIMARY KEY (`title`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Дамп данных таблицы card_game.rarity: ~0 rows (приблизительно)
+-- Дамп данных таблицы card_game.rarity: ~2 rows (приблизительно)
 /*!40000 ALTER TABLE `rarity` DISABLE KEYS */;
 INSERT INTO `rarity` (`title`, `build_cost`, `spray_cost`) VALUES
 	('Обычная', 40, 5),
@@ -562,12 +592,12 @@ CREATE TABLE IF NOT EXISTS `user_auth` (
 -- Дамп данных таблицы card_game.user_auth: ~6 rows (приблизительно)
 /*!40000 ALTER TABLE `user_auth` DISABLE KEYS */;
 INSERT INTO `user_auth` (`login`, `email`, `password_hash`, `session_hash`, `money`, `dust`, `exp`) VALUES
-	('admin', 'admin@admin.admin', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 'lol', 100, 0, 0),
+	('admin', 'admin@admin.admin', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 'lol', 131, 0, 0),
 	('alex', 'alex@alex.alex', '4135aa9dc1b842a653dea846903ddb95bfb8c5a10c504a7fa16e10bc31d1fdf0', '', 0, 0, 0),
 	('lal', 'lal', 'a7a8572a4aabf25aac4c4f2eecd2a16e5b20822c5936eb2686414e801fdfb4f8', '', 0, 0, 0),
-	('lol', 'lol', '07123e1f482356c415f684407a3b8723e10b2cbbc0b8fcd6282c49d37c9c1abc', '', 100, 0, 0),
+	('lol', 'lol', '07123e1f482356c415f684407a3b8723e10b2cbbc0b8fcd6282c49d37c9c1abc', '', 20, 0, 0),
 	('maks', 'maks@maks.maks', '7ad071cef29a13b5a87653e67f5aa1c43dc4726590a387cc36d3e35e91c4e26c', '', 0, 0, 0),
-	('pag', 'pag', '10e583b1e5d93ef8afd8fd6a6f20113825514ebe1fb6fe9110aa24b675c8a605', '', 100, 0, 0);
+	('pag', 'pag', '10e583b1e5d93ef8afd8fd6a6f20113825514ebe1fb6fe9110aa24b675c8a605', '', 30, 0, 0);
 /*!40000 ALTER TABLE `user_auth` ENABLE KEYS */;
 
 -- Дамп структуры для триггер card_game.auction_cards_check

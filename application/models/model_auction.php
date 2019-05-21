@@ -118,7 +118,8 @@ class Model_Auction extends Model
             return $err;
         }
         //$query="UPDATE auction_cards set sell_price=".$price.", buyer='".$login."' where id=".$id;
-        $query="INSERT into auction_queue values(0, ".$id.", '".$login."', ".$price.")";
+        $query = "CALL auction_queue_proc (".$id.", '".$login."', ".$price.")";
+        //$query="INSERT into auction_queue values(0, ".$id.", '".$login."', ".$price.")";
         if ($result = $this->mysqli->query($query)) {
 			return null;
 		}else{
