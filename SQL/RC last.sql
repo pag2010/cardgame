@@ -13,12 +13,10 @@
 
 
 -- Дамп структуры базы данных card_game
-DROP DATABASE IF EXISTS `card_game`;
 CREATE DATABASE IF NOT EXISTS `card_game` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `card_game`;
 
 -- Дамп структуры для таблица card_game.auction_cards
-DROP TABLE IF EXISTS `auction_cards`;
 CREATE TABLE IF NOT EXISTS `auction_cards` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `seller` varchar(50) NOT NULL,
@@ -41,7 +39,6 @@ INSERT INTO `auction_cards` (`id`, `seller`, `card_id`, `quantity`, `start_price
 /*!40000 ALTER TABLE `auction_cards` ENABLE KEYS */;
 
 -- Дамп структуры для таблица card_game.auction_queue
-DROP TABLE IF EXISTS `auction_queue`;
 CREATE TABLE IF NOT EXISTS `auction_queue` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `auction_id` int(11) unsigned NOT NULL,
@@ -61,32 +58,11 @@ INSERT INTO `auction_queue` (`id`, `auction_id`, `member`, `price`) VALUES
 /*!40000 ALTER TABLE `auction_queue` ENABLE KEYS */;
 
 -- Дамп структуры для процедура card_game.auction_queue_proc
-DROP PROCEDURE IF EXISTS `auction_queue_proc`;
 DELIMITER //
 CREATE DEFINER=`root`@`%` PROCEDURE `auction_queue_proc`(
 	IN `auctionid` INT,
 	IN `login_p` VARCHAR(50),
 	IN `price_p` INT
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 )
 pr: BEGIN
 	declare max_price int; 
@@ -125,7 +101,6 @@ END//
 DELIMITER ;
 
 -- Дамп структуры для таблица card_game.cards
-DROP TABLE IF EXISTS `cards`;
 CREATE TABLE IF NOT EXISTS `cards` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(50) NOT NULL,
@@ -168,7 +143,6 @@ INSERT INTO `cards` (`id`, `title`, `description`, `rarity_title`, `mana_cost`, 
 /*!40000 ALTER TABLE `cards` ENABLE KEYS */;
 
 -- Дамп структуры для таблица card_game.chats
-DROP TABLE IF EXISTS `chats`;
 CREATE TABLE IF NOT EXISTS `chats` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `login1` varchar(50) NOT NULL,
@@ -190,7 +164,6 @@ INSERT INTO `chats` (`id`, `login1`, `login2`) VALUES
 /*!40000 ALTER TABLE `chats` ENABLE KEYS */;
 
 -- Дамп структуры для таблица card_game.collections
-DROP TABLE IF EXISTS `collections`;
 CREATE TABLE IF NOT EXISTS `collections` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `login` varchar(50) NOT NULL,
@@ -216,7 +189,6 @@ INSERT INTO `collections` (`id`, `login`, `card_id`, `quantity`) VALUES
 /*!40000 ALTER TABLE `collections` ENABLE KEYS */;
 
 -- Дамп структуры для таблица card_game.decks
-DROP TABLE IF EXISTS `decks`;
 CREATE TABLE IF NOT EXISTS `decks` (
   `id` int(11) NOT NULL,
   `login` varchar(50) NOT NULL,
@@ -235,7 +207,6 @@ CREATE TABLE IF NOT EXISTS `decks` (
 /*!40000 ALTER TABLE `decks` ENABLE KEYS */;
 
 -- Дамп структуры для процедура card_game.delete_duplicate
-DROP PROCEDURE IF EXISTS `delete_duplicate`;
 DELIMITER //
 CREATE DEFINER=`root`@`%` PROCEDURE `delete_duplicate`()
 BEGIN
@@ -262,7 +233,6 @@ END//
 DELIMITER ;
 
 -- Дамп структуры для таблица card_game.experience
-DROP TABLE IF EXISTS `experience`;
 CREATE TABLE IF NOT EXISTS `experience` (
   `lvl` int(11) NOT NULL,
   `exp` int(11) NOT NULL,
@@ -277,7 +247,6 @@ INSERT INTO `experience` (`lvl`, `exp`) VALUES
 /*!40000 ALTER TABLE `experience` ENABLE KEYS */;
 
 -- Дамп структуры для таблица card_game.friends
-DROP TABLE IF EXISTS `friends`;
 CREATE TABLE IF NOT EXISTS `friends` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `subscriber` varchar(50) NOT NULL,
@@ -299,7 +268,6 @@ INSERT INTO `friends` (`id`, `subscriber`, `player`) VALUES
 /*!40000 ALTER TABLE `friends` ENABLE KEYS */;
 
 -- Дамп структуры для функция card_game.frozen_money
-DROP FUNCTION IF EXISTS `frozen_money`;
 DELIMITER //
 CREATE DEFINER=`root`@`%` FUNCTION `frozen_money`(
 	`user_login` VARCHAR(50)
@@ -313,7 +281,6 @@ END//
 DELIMITER ;
 
 -- Дамп структуры для таблица card_game.kind
-DROP TABLE IF EXISTS `kind`;
 CREATE TABLE IF NOT EXISTS `kind` (
   `title` varchar(50) NOT NULL,
   PRIMARY KEY (`title`)
@@ -326,7 +293,6 @@ INSERT INTO `kind` (`title`) VALUES
 /*!40000 ALTER TABLE `kind` ENABLE KEYS */;
 
 -- Дамп структуры для таблица card_game.messages
-DROP TABLE IF EXISTS `messages`;
 CREATE TABLE IF NOT EXISTS `messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `chat_id` int(11) NOT NULL,
@@ -415,7 +381,6 @@ INSERT INTO `messages` (`id`, `chat_id`, `sender_login`, `message`, `isRead`, `d
 /*!40000 ALTER TABLE `messages` ENABLE KEYS */;
 
 -- Дамп структуры для процедура card_game.myevent
-DROP PROCEDURE IF EXISTS `myevent`;
 DELIMITER //
 CREATE DEFINER=`root`@`%` PROCEDURE `myevent`()
 BEGIN
@@ -499,7 +464,6 @@ END//
 DELIMITER ;
 
 -- Дамп структуры для таблица card_game.rarity
-DROP TABLE IF EXISTS `rarity`;
 CREATE TABLE IF NOT EXISTS `rarity` (
   `title` varchar(50) NOT NULL,
   `build_cost` int(11) NOT NULL,
@@ -515,7 +479,6 @@ INSERT INTO `rarity` (`title`, `build_cost`, `spray_cost`) VALUES
 /*!40000 ALTER TABLE `rarity` ENABLE KEYS */;
 
 -- Дамп структуры для таблица card_game.user_auth
-DROP TABLE IF EXISTS `user_auth`;
 CREATE TABLE IF NOT EXISTS `user_auth` (
   `login` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
@@ -539,7 +502,6 @@ INSERT INTO `user_auth` (`login`, `email`, `password_hash`, `session_hash`, `mon
 /*!40000 ALTER TABLE `user_auth` ENABLE KEYS */;
 
 -- Дамп структуры для триггер card_game.auction_cards_check
-DROP TRIGGER IF EXISTS `auction_cards_check`;
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `auction_cards_check` BEFORE INSERT ON `auction_cards` FOR EACH ROW BEGIN
