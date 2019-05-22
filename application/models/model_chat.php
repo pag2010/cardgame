@@ -6,6 +6,7 @@ class Model_Chat extends Model
 	public $login2;
 	public $messages;
 	public $message;
+	public $chat;
 	private $mysqli;
 
 	function __construct(){
@@ -29,7 +30,7 @@ class Model_Chat extends Model
 	
 	}
 
-	public function get_chat($login){
+	public function get_chats($login){
 		$err=$this->check_connection();
 		if ($err!=null){
 			return $err;
@@ -47,7 +48,29 @@ class Model_Chat extends Model
 			return null;
 		}else{
 			//$this->mysqli->close();
-			return ("Ошибка при выполнении запроса1 ".$this->mysqli->error);
+			return ("Ошибка при выполнении запроса ".$this->mysqli->error);
+		}
+	}
+
+	public function get_chat($login_user, $login_player){
+		$err=$this->check_connection();
+		if ($err!=null){
+			return $err;
+		}
+		$query="SELECT id, login1, login2 from chats where login1='".$login_user."' and login2='".$login_player."' or login1='".$login_player."' and login2='".$login_user."'";
+		if ($result = $this->mysqli->query($query)) {
+			if ($row = $result->fetch_assoc()) {
+				$this->chat=new Chat($row["id"], $row["login1"], $row["login2"]);
+			}else{
+				return "Не удалось найти диалог";
+			}
+			//$this->char_id=$char_id;
+			$result->free();
+			//$this->mysqli->close();
+			return null;
+		}else{
+			//$this->mysqli->close();
+			return ("Ошибка при выполнении запроса ".$this->mysqli->error);
 		}
 	}
 
@@ -115,3 +138,17 @@ class Model_Chat extends Model
 		
 	}
 }
+
+class Chat {
+	public $chat_id;
+	public $login1;
+	public $login2;
+
+	function __construct($id, $login1, $login2){
+		$this->chat_id=$id;
+		$this->login1=$login1;
+		$this->login2=$login2;
+	}
+}
+
+?>

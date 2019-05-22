@@ -11,8 +11,8 @@
 	    function action_index()
 	    {
             if (isset($_SESSION['login'])){
-                $this->view->generate('game/info_game_view.php', 'template_view.php');
                 echo "Добро пожаловать ".$_SESSION['login'];
+                $this->view->generate('game/info_game_view.php', 'template_view.php');
             }else{
                 echo '<meta http-equiv="refresh" content="0;URL=/auth/login">';
             }

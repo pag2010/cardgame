@@ -11,7 +11,7 @@
         }
 
         public function get_msg($chat_id){
-            $err=$this->model->get_chat($this->login);
+            $err=$this->model->get_chats($this->login);
             if ($err!=null){
                 $this->model->close_connection();
                 return $err;
@@ -36,7 +36,7 @@
         }
 
         public function add_chat($login){
-            $err=$this->model->get_chat($this->login);
+            $err=$this->model->get_chats($this->login);
             if ($err!=null){
                 $this->model->close_connection();
                 return $err;

@@ -25,7 +25,7 @@
                     $this->view->generate('chat/opened_chat_view.php', 'template_view.php','opened_chat_js.php', 'opened_chat_css.php', $this->model->messages);
                 }
                 else{
-                    $this->model->get_chat($_SESSION['login']);
+                    $this->model->get_chats($_SESSION['login']);
                     $chats=$this->model->chat_id;
                     $login1=$this->model->login1;
                     $login2=$this->model->login2;
@@ -40,6 +40,7 @@
                 echo '<meta http-equiv="refresh" content="0;URL=/auth/login">';
             }
         }
+
         function action_create()
         {
             if (isset($_SESSION['login'])){
@@ -56,6 +57,25 @@
         }else{
             echo '<meta http-equiv="refresh" content="0;URL=/auth/login">';
         }
+        }
+
+        function action_getChat()
+	    {
+            if (isset($_SESSION['login'])){
+                $login=$_SESSION['login'];
+                if (isset($_GET['login'])){
+                    $this->model->get_chat($_SESSION['login'], $_GET['login']);
+                    $chat=$this->model->chat;
+                    if (isset($chat)){
+                        $this->view->generatejson($chat);
+                    }else{
+                        var_dump(http_response_code(404));
+                    }
+                    //$this->view->generate('chat/info_chat_view.php', 'template_view.php', 'info_chat_js.php', 'info_chat_css.php', $arr);
+                }
+            }else{
+                echo '<meta http-equiv="refresh" content="0;URL=/auth/login">';
+            }
         }
 
         function action_send(){

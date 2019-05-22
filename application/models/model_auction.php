@@ -51,7 +51,7 @@ class Model_Auction extends Model
 				$card=new Card($row["card_id"], $row["title"], $row["description"], $row["rarity_title"], $row["mana_cost"], $row["life"], $row["attack"], $row["kind"]);
                 $auction_item=new Auction_Item($row["auction_id"], $row["seller"] ,$this->member, $card, $row["quantity"], $row["start_price"],$this->money, $row["start_date"], $row["sell_date"]);
                 $this->auction_list[]=$auction_item;
-                echo $row["auction_cards.id"];
+                //echo $row["auction_cards.id"];
             }
 			$result->free();
 			return null;
