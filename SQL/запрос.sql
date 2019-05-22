@@ -1,0 +1,1 @@
+iINSERT INTO auction_cards values (0, 'admin', null, 1, 1, 100, NULL, 2019-05-14 10:28:47, '2019-05-18 05:05:05')

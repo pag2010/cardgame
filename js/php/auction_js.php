@@ -1,0 +1,1 @@
+<script src="/js/react/auction.js" type="text/javascript"></script>

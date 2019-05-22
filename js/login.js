@@ -1,3 +1,4 @@
+
 $(document).ready(function(){
     document.onkeyup = function (e) {
 	    e = e || window.event;
@@ -11,6 +12,11 @@ $(document).ready(function(){
         $('#password').val('');
     });
 });
+
+/*ReactDOM.render(
+    <h1>Hello, world!</h1>,
+    document.getElementById('root')
+);*/
 
 function onSubmitClickOnLogin(){
     if ($('#password').val()!=""){

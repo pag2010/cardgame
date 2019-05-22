@@ -18,13 +18,19 @@
                     $controller_name=substr($routes[1],0 , $g);
                 }
             }
-            
+            //echo $controller_name;
             // получаем имя экшена
             if ( !empty($routes[2]) )
             {
-                $action_name = $routes[2];
+                $g=(strpos($routes[2], '?'));
+                if ($g==false){
+                    $action_name = $routes[2];
+                }
+                else{
+                    $action_name=substr($routes[2],0 , $g);
+                }
             }
-    
+            //echo $action_name;
             // добавляем префиксы
             $model_name = 'Model_'.$controller_name;
             $storage_name='storage_'.$controller_name;
