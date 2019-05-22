@@ -26,8 +26,26 @@
                         return;
                     }
                     //echo '<meta http-equiv="refresh" content="0;URL=/friends/add">';
+                }else{
+                    $this->view->generate('friends/friends_add_view.php', 'template_view.php','none_js.php', 'none_css.php');
                 }
-                $this->view->generate('friends/friends_add_view.php', 'template_view.php','none_js.php', 'none_css.php');
+            }else{
+                echo '<meta http-equiv="refresh" content="0;URL=/auth/login">';
+            }
+        }
+
+        function action_del(){
+            if (isset($_SESSION['login'])){
+                if (isset($_POST['submit'])){
+                    $err=$this->model->del_subscr($_SESSION['login'], $_POST['login']);
+                    if ($err!=null){
+                        ErrorHandler::addError($err);
+                        ErrorHandler::displayErrors();
+                        return;
+                    }
+                    echo "keked";
+                    //echo '<meta http-equiv="refresh" content="0;URL=/friends/add">';
+                }
             }else{
                 echo '<meta http-equiv="refresh" content="0;URL=/auth/login">';
             }

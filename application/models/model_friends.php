@@ -140,6 +140,19 @@ class Model_Friends extends Model
 		}else{
 			return ("Ошибка при выполнении запроса1 ".$this->mysqli->error);
 		}
+	}
+	
+	public function del_subscr($user, $login){
+        $err=$this->check_connection();
+        if ($err!=null){
+            return $err;
+		}
+        $query="DELETE from friends where subscriber='".$user."' and player='".$login."'";
+        if ($result = $this->mysqli->query($query)) {
+			return null;
+		}else{
+			return ("Ошибка при выполнении запроса1 ".$this->mysqli->error);
+		}
     }
 
 	public function close_connection(){

@@ -1,0 +1,1 @@
+<script src="/js/react/collection.js" type="text/javascript"></script>
