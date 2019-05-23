@@ -43,8 +43,67 @@
                         ErrorHandler::displayErrors();
                         return;
                     }
-                    echo "keked";
+                    //echo "keked";
                     //echo '<meta http-equiv="refresh" content="0;URL=/friends/add">';
+                }
+            }else{
+                echo '<meta http-equiv="refresh" content="0;URL=/auth/login">';
+            }
+        }
+
+        function action_search(){
+            if (isset($_SESSION['login'])){
+                if (isset($_GET['search'])){
+                        if ((isset($_GET['page'])) && (isset($_GET['count']))){
+                        //if ((isset($_GET['friends'])) && (isset($_GET['page'])) && (isset($_GET['count']))){
+                        $err=$this->model->get_all_friends($_SESSION['login'], $_GET['search'], $_GET['page'], $_GET['count']);
+                        if ($err!=null){
+                            ErrorHandler::addError($err);
+                            ErrorHandler::displayErrors();
+                            return;
+                        }
+                        $fr=$this->model->friends;
+                        //$this->view->generatejson($arr); 
+                        //}else{
+                        if (isset($_GET['friends'])){
+                            if (isset($fr)){
+                                $arr['friends']=$fr;
+                            }else{
+                                $arr['friends']=null;
+                            }
+                        }
+                        if ((isset($_GET['subscribers'])) && (isset($_GET['page'])) && (isset($_GET['count']))){
+                            $err=$this->model->get_searched_subscribers($_SESSION['login'], $_GET['search'], $_GET['page'], $_GET['count']);
+                            if ($err!=null){
+                                ErrorHandler::addError($err);
+                                ErrorHandler::displayErrors();
+                                return;
+                            }
+                            $sub=$this->model->subscribers;
+                            $arr['subscribers']=null;
+                            if (isset($sub)){
+                                $arr['subscribers']=$sub;
+                               /* if (isset($fr)){
+                                     for ($i=0; $i<count($sub); $i++){
+                                        $flag=true;
+                                        for ($j=0; $j<count($fr); $j++){
+                                        if (strcmp($sub[$i], $fr[$j])==0){
+                                                $flag=false;
+                                            }
+                                        }
+                                        if ($flag){
+                                            $arr['subscribers'][]=$sub[$i];
+                                        }
+                                     }
+                                }else{
+                                    $arr['subscribers']=$sub;
+                                }*/
+                            }
+                            
+                        //}    
+                            }
+                            $this->view->generatejson($arr); 
+                    }
                 }
             }else{
                 echo '<meta http-equiv="refresh" content="0;URL=/auth/login">';
@@ -80,7 +139,8 @@
                         //$this->model->close_connection();
                     }
                     if (isset($_GET['subscribers'])){
-                        $err=$this->model->get_all_subscribers($_SESSION['login']);
+                        //$err=$this->model->get_all_subscribers($_SESSION['login']);
+                        $err=$this->model->get_paged_subscribers($_SESSION['login'], $_GET['page'], $_GET['count']);
                         if ($err!=null){
                             ErrorHandler::addError($err);
                             ErrorHandler::displayErrors();

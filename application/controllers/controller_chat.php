@@ -22,10 +22,16 @@
                             ErrorHandler::displayErrors();
                             return;
                         }
+                    $err=$this->model->read_msg($chat_id, $_SESSION['login']);
+                    if ($err!=null){
+                        ErrorHandler::addError($err);
+                        ErrorHandler::displayErrors();
+                        return;
+                    }
                     $this->view->generate('chat/opened_chat_view.php', 'template_view.php','opened_chat_js.php', 'opened_chat_css.php', $this->model->messages);
                 }
                 else{
-                    $this->model->get_chats($_SESSION['login']);
+                    /*$this->model->get_chats($_SESSION['login']);
                     $chats=$this->model->chat_id;
                     $login1=$this->model->login1;
                     $login2=$this->model->login2;
@@ -33,7 +39,18 @@
                     $arr['login']=$_SESSION['login'];
                     $arr['chats']=$chats;
                     $arr['login1']=$login1;
+                    $arr['login2']=$login2;*/
+                    $this->model->get_chats_unread($_SESSION['login']);
+                    $chats=$this->model->chat_id;
+                    $login1=$this->model->login1;
+                    $login2=$this->model->login2;
+                    $unread=$this->model->unRead;
+                    $arr['title']="Чат";
+                    $arr['login']=$_SESSION['login'];
+                    $arr['chats']=$chats;
+                    $arr['login1']=$login1;
                     $arr['login2']=$login2;
+                    $arr['unRead']=$unread;
                     $this->view->generate('chat/info_chat_view.php', 'template_view.php', 'info_chat_js.php', 'info_chat_css.php', $arr);
                 }
             }else{
@@ -47,6 +64,23 @@
             $this->view->generate('chat/create_chat_view.php', 'template_view.php');
             if (isset($_POST['submit'])){
                 $err=$this->storage->add_chat($_POST['login']);
+                if ($err!=null){
+                    ErrorHandler::addError($err);
+                    ErrorHandler::displayErrors();
+                    return;
+                }
+                echo '<meta http-equiv="refresh" content="0;URL=/chat">';
+            }
+        }else{
+            echo '<meta http-equiv="refresh" content="0;URL=/auth/login">';
+        }
+        }
+
+        function action_del()
+        {
+            if (isset($_SESSION['login'])){
+            if (isset($_POST['submit'])){
+                $err=$this->model->del_chat($_POST['id']);
                 if ($err!=null){
                     ErrorHandler::addError($err);
                     ErrorHandler::displayErrors();

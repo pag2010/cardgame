@@ -7,6 +7,7 @@ $(function(){
   pos=urlstr.indexOf('=');
   chat=urlstr.slice(pos+1);
   $(".chat-history").scrollTop($(".chat-history")[0].scrollHeight);
+  
   $("#submit").click(function(){
     if ($("#msg").val()!=""){
       $.ajax({
@@ -17,6 +18,20 @@ $(function(){
       $("#msg").val("");
     }
   });
+  
+  
+
+  $("#delchat").on("click", function(){
+    $.ajax({
+      type: "POST",
+      url: mainUrl+"chat/del",
+      data: { submit:"true", id: parseInt(chat)},
+      success: function(data){
+        $(location).attr('href',"/chat");
+      }
+    })
+  });
+
     $("#msg-form").on("submit", function(event){
       event.preventDefault();
       if ($("#msg").val()!=""){

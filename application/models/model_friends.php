@@ -63,6 +63,26 @@ class Model_Friends extends Model
 		}
 	}
 
+	public function get_serched_friends($user, $str, $page, $count){
+        $err=$this->check_connection();
+        if ($err!=null){
+            return $err;
+		}
+		$start=$page*$count;
+        $query="SELECT friends.player FROM friends INNER JOIN friends AS friends1 ON friends.subscriber=friends1.player WHERE friends.subscriber=friends1.player AND friends.player=friends1.subscriber AND friends.subscriber='".$user."' AND (friends.player LIKE '%".$str."%') LIMIT ".$start.", ".$count;
+        $friends;
+        if ($result = $this->mysqli->query($query)) {
+			while ($row = $result->fetch_assoc()) {
+				$friends[]=$row["player"];
+			}
+			$result->free();
+			$this->friends=$friends;
+			return null;
+		}else{
+			return ("Ошибка при выполнении запроса ".$this->mysqli->error);
+		}
+	}
+
 	public function get_paged_friends($login, $page, $count){
         $err=$this->check_connection();
         if ($err!=null){
@@ -129,6 +149,46 @@ class Model_Friends extends Model
             return $err;
 		}
         $query="SELECT subscriber FROM friends WHERE player='".$login."'";
+        $subscribers;
+        if ($result = $this->mysqli->query($query)) {
+			while ($row = $result->fetch_assoc()) {
+				$subscribers[]=$row["subscriber"];
+			}
+			$result->free();
+			$this->subscribers=$subscribers;
+			return null;
+		}else{
+			return ("Ошибка при выполнении запроса1 ".$this->mysqli->error);
+		}
+	}
+
+	public function get_searched_subscribers($login, $str, $page, $count){
+        $err=$this->check_connection();
+        if ($err!=null){
+            return $err;
+		}
+		$start=$page*$count;
+        $query="SELECT subscriber FROM friends WHERE player='".$login."' AND subscriber not IN (SELECT friends1.subscriber FROM friends INNER JOIN friends AS friends1 ON friends.subscriber=friends1.player WHERE friends.subscriber=friends1.player AND friends.player=friends1.subscriber AND friends.subscriber='".$login."') and subscriber like '%".$str."%' LIMIT ".$start.", ".$count;
+        $subscribers;
+        if ($result = $this->mysqli->query($query)) {
+			while ($row = $result->fetch_assoc()) {
+				$subscribers[]=$row["subscriber"];
+			}
+			$result->free();
+			$this->subscribers=$subscribers;
+			return null;
+		}else{
+			return ("Ошибка при выполнении запроса1 ".$this->mysqli->error);
+		}
+	}
+
+	public function get_paged_subscribers($login, $page, $count){
+        $err=$this->check_connection();
+        if ($err!=null){
+            return $err;
+		}
+		$start=$page*$count;
+        $query="SELECT subscriber FROM friends WHERE player='".$login."' LIMIT ".$start.", ".$count;
         $subscribers;
         if ($result = $this->mysqli->query($query)) {
 			while ($row = $result->fetch_assoc()) {

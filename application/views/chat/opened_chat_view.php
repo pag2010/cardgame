@@ -1,3 +1,4 @@
+<button id="delchat">Удалить</button>
 <?php
     echo "<div class='chat-history'>";
     if (isset($data['sender'])){
@@ -8,7 +9,7 @@
        
         for ($i=0;$i<count($data['sender']);$i++){
             echo "<tr>";
-            echo "<td class='login'>".$data['sender'][$i]."<td class='dots'>:</td></td>"."<td class='msg'>".$data['message'][$i]."</td><td class='time'>11:40 11.04.18</td>";
+            echo "<td class='login'>".$data['sender'][$i]."<td class='dots'>:</td></td>"."<td class='msg'>".$data['message'][$i]."</td><td class='time'>".$data['date_msg'][$i]."</td>";
             echo "</tr>";
         }
         echo "</table>";
